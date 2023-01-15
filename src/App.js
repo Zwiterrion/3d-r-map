@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { SvgLoader, SvgProxy } from 'react-svgmt'
+import Regions from './assets/regions'
+import Departments from './assets/departements.json'
+import Visualizer from './Visualizer'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const COLORS = {
+    selected: "#1abc9c",
+    unselected: "#95a5a6"
+}
+
+class App extends React.Component {
+
+    state = {
+        departments: Departments,
+        lastDepartment: undefined
+    }
+
+    componentDidMount() {
+        [...document.getElementsByTagName("text")].forEach(t => t.style['pointer-events'] = 'none')
+    }
+
+    render() {
+        const { departments, lastDepartment } = this.state;
+        return (
+            <div className="App">
+                <SvgLoader svgXML={Regions}>
+                    <SvgProxy selector="#carte" fill="#eee" />
+                    {departments.map(r => {
+                        return <SvgProxy
+                            key={r.num_dep}
+                            selector={`*[id^="departement${r.num_dep}"]`}
+                            fill={COLORS.unselected}
+                            onClick={e => {
+                                // e.stopPropagation()
+                                console.log(e, 'COUCOU')
+                                e.target.style.fill = COLORS.selected
+
+                                if (lastDepartment && lastDepartment.id !== e.target.id)
+                                    lastDepartment.style.fill = COLORS.unselected
+
+                                this.setState({
+                                    lastDepartment: e.target
+                                })
+                            }}
+                        />
+                    })}
+                </SvgLoader>
+                <Visualizer />
+            </div>
+        );
+    }
 }
 
 export default App;
