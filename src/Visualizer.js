@@ -6,14 +6,22 @@ export default class Visualizer extends React.Component {
     const { department } = this.props
     return (
       <div className='Visualizer'>
-        {department && <img src={`https://zwiterrion.github.io/ideas/images/${department}.png`} />}
-
-        {!department && <p style={{
-          textAlign: 'center'
+        {department && <div sryle={{
+          flex: 1
         }}>
-          Commencer par sélectionner un département sur la carte
-        </p>}
-      </div>
+          <img
+            style={{ height: 'auto', width: '100%' }}
+            src={`https://zwiterrion.github.io/ideas/images/${department}.png`} />
+        </div>}
+
+        {
+          !department && <p style={{
+            textAlign: 'center'
+          }}>
+            Commencer par sélectionner un département sur la carte
+          </p>
+        }
+      </div >
     )
   }
 }

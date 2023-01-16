@@ -22,6 +22,7 @@ class App extends React.Component {
 
     render() {
         const { departments, lastDepartment } = this.state;
+        console.log(lastDepartment ? Departments.find(f => f.num_dep === Number(lastDepartment.id.replace("departement", ""))) : undefined)
         return (
             <div className="App">
                 <SvgLoader svgXML={Regions}>
@@ -46,7 +47,8 @@ class App extends React.Component {
                         />
                     })}
                 </SvgLoader>
-                <Visualizer />
+                <Visualizer department={lastDepartment ?
+                    Departments.find(f => `${"" + f.num_dep}` === lastDepartment.id.replace("departement", ""))?.dep_name : undefined} />
             </div>
         );
     }
